@@ -33,7 +33,7 @@ export default function move(gameState){
     if (myHead.x == 0){
         moveSafety.left = false;
     }
-
+    
     if (myHead.x == boardWidth - 1){
         moveSafety.right = false;
     }
