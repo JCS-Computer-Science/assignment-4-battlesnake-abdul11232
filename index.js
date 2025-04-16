@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json());
 const config = {
   apiversion: "1",
-  author: "",       // TODO: Your Battlesnake Username
+  author: "abdul",       // TODO: Your Battlesnake Username
   color: "#cb82ff", // TODO: Choose color
   head: "default",  // TODO: Choose head, see https://play.battlesnake.com/customizations/ for options unlocked in your account
   tail: "default",  // TODO: Choose tail, see https://play.battlesnake.com/customizations/ for options unlocked in your account
@@ -35,6 +35,26 @@ const config = {
 //TODO: respond to POST requests on "/end", which signals the end of a game. Your response itself is ignored, 
 //      but must have status code "200" the request body will contain objects representing the game
 //      https://docs.battlesnake.com/api/requests/end
+
+
+app.get("/", (req, res) =>{
+  res.json(config);
+})
+
+app.post("/start", (req, res) =>{
+  res.status(200);
+  res.send();
+})
+
+app.post("/move", (req, res) =>{
+  let newMove = move(req.body);
+  res.send(newMove);
+})
+
+app.post("/end", (req, res) => {
+  res.status(200);
+  res.send();
+})
 
 const host = '0.0.0.0';
 const port = process.env.PORT || 8000;
