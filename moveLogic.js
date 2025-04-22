@@ -5,21 +5,23 @@ export default function move(gameState){
         left: true,
         right: true
     };
+
+    let myBody = gameState.you.body;
     
     // We've included code to prevent your Battlesnake from moving backwards
     const myHead = gameState.you.body[0];
     const myNeck = gameState.you.body[1];
     
-    if (myNeck.x < myHead.x) {        // Neck is left of head, don't move left
+    if (myNeck.x < myHead.x) {        
         moveSafety.left = false;
         
-    } else if (myNeck.x > myHead.x) { // Neck is right of head, don't move right
+    } else if (myNeck.x > myHead.x) { 
         moveSafety.right = false;
         
-    } else if (myNeck.y < myHead.y) { // Neck is below head, don't move down
+    } else if (myNeck.y < myHead.y) { 
         moveSafety.down = false;
         
-    } else if (myNeck.y > myHead.y) { // Neck is above head, don't move up
+    } else if (myNeck.y > myHead.y) { 
         moveSafety.up = false;
     }
     
@@ -49,6 +51,24 @@ export default function move(gameState){
     // TODO: Step 2 - Prevent your Battlesnake from colliding with itself
     // gameState.you contains an object representing your snake, including its coordinates
     // https://docs.battlesnake.com/api/objects/battlesnake
+
+    for (let i = 0; i <(myBody.length - 1); i++){
+        let segment = myBody[i];
+        if (segment.x == myHead.x && segment.y == myHead.y + 1){
+            moveSafety.up = false;
+        }
+        if (segment.x == myHead.x && segment.y == myHead.y - 1){
+            moveSafety.down = false;
+        }
+        if (segment.x == myHead.x + 1 && segment.y == myHead.y){
+            moveSafety.right = false;
+        }
+
+        if (segment.x == myHead.x - 1 && segment.y == myHead.y){
+            moveSafety.left = false;
+        }
+
+    }
     
     
     // TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
@@ -71,6 +91,7 @@ export default function move(gameState){
     
     // TODO: Step 4 - Move towards food instead of random, to regain health and survive longer
     // gameState.board.food contains an array of food coordinates https://docs.battlesnake.com/api/objects/board
+
     
     console.log(`MOVE ${gameState.turn}: ${nextMove}`)
     return { move: nextMove };
