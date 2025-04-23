@@ -91,7 +91,37 @@ export default function move(gameState){
     
     // TODO: Step 4 - Move towards food instead of random, to regain health and survive longer
     // gameState.board.food contains an array of food coordinates https://docs.battlesnake.com/api/objects/board
+    let closestFood = null;
+    let closestDistance = Infinity;
 
+    for (let food of gameState.board.food) {
+        let distance = Math.abs(food.x - myHead.x) + Math.abs(food.y - myHead.y); // Manhattan distance
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestFood = food;
+        }
+    }
+
+    if (closestFood) {
+
+        let foodDirection = '';
+
+        if (closestFood.x < myHead.x) {
+            foodDirection = 'left';
+        } else if (closestFood.x > myHead.x) {
+            foodDirection = 'right';
+        } else if (closestFood.y < myHead.y) {
+            foodDirection = 'down';
+        } else if (closestFood.y > myHead.y) {
+            foodDirection = 'up';
+        }
+
+        if (moveSafety[foodDirection]) {
+            console.log(`MOVE ${gameState.turn}: Moving towards food`);
+            return { move: foodDirection };
+        }
+
+    }
     
     console.log(`MOVE ${gameState.turn}: ${nextMove}`)
     return { move: nextMove };
