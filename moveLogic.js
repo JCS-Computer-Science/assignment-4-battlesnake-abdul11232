@@ -75,6 +75,63 @@ export default function move(gameState){
     // gameState.board.snakes contains an array of enemy snake objects, which includes their coordinates
     // https://docs.battlesnake.com/api/objects/battlesnake
     
+    const otherSnakes = gameState.board.snakes;
+
+    for (let snake of otherSnakes) {
+      
+        if (snake.id === gameState.you.id) {
+            continue;
+        }
+
+        for (let segment of snake.body) {
+            if (segment.x === myHead.x && segment.y === myHead.y + 1) {
+                moveSafety.up = false;
+            }
+            if (segment.x === myHead.x && segment.y === myHead.y - 1) {
+                moveSafety.down = false;
+            }
+            if (segment.x === myHead.x + 1 && segment.y === myHead.y) {
+                moveSafety.right = false;
+            }
+            if (segment.x === myHead.x - 1 && segment.y === myHead.y) {
+                moveSafety.left = false;
+            }
+        }
+    }
+
+    for (let snake of otherSnakes) {
+       
+        if (snake.id === gameState.you.id) continue;
+
+        const enemyHead = snake.body[0];
+        const enemyLength = snake.length;
+        const myLength = gameState.you.length;
+
+       
+        const possibleEnemyMoves = [
+            { x: enemyHead.x, y: enemyHead.y + 1 }, 
+            { x: enemyHead.x, y: enemyHead.y - 1 },
+            { x: enemyHead.x - 1, y: enemyHead.y }, 
+            { x: enemyHead.x + 1, y: enemyHead.y }, 
+        ];
+
+        for (let move of possibleEnemyMoves) {
+            if (move.x === myHead.x && move.y === myHead.y + 1 && enemyLength >= myLength) {
+                moveSafety.up = false;
+            }
+            if (move.x === myHead.x && move.y === myHead.y - 1 && enemyLength >= myLength) {
+                moveSafety.down = false;
+            }
+            if (move.x === myHead.x + 1 && move.y === myHead.y && enemyLength >= myLength) {
+                moveSafety.right = false;
+            }
+            if (move.x === myHead.x - 1 && move.y === myHead.y && enemyLength >= myLength) {
+                moveSafety.left = false;
+            }
+        }
+    }
+    
+    
     // Are there any safe moves left?
     
     //Object.keys(moveSafety) returns ["up", "down", "left", "right"]
