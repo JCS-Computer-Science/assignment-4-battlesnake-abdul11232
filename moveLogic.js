@@ -108,7 +108,7 @@ export default function move(gameState){
         const myLength = gameState.you.length;
 
        
-        const possibleEnemyMoves = [
+        let possibleEnemyMoves = [
             { x: enemyHead.x, y: enemyHead.y + 1 }, 
             { x: enemyHead.x, y: enemyHead.y - 1 },
             { x: enemyHead.x - 1, y: enemyHead.y }, 
@@ -130,6 +130,8 @@ export default function move(gameState){
             }
         }
     }
+
+    
     
     
     // Are there any safe moves left?
@@ -179,6 +181,63 @@ export default function move(gameState){
         }
 
     }
+
+    let bestMove = safeMoves[0];
+    let bestScore = -1;
+
+    for (let move of safeMoves) {
+        let newHead = { x: myHead.x, y: myHead.y };
+        if (move === "up") newHead.y += 1;
+        if (move === "down") newHead.y -= 1;
+        if (move === "left") newHead.x -= 1;
+        if (move === "right") newHead.x += 1;
+
+        let space = floodFill(newHead, gameState, 10); 
+        if (space > bestScore) {
+            bestScore = space;
+            bestMove = move;
+        }
+    }
+
+    console.log(`MOVE ${gameState.turn}: ${bestMove}`);
+    return { move: bestMove };
+}
+
+
+function floodFill(start, gameState, maxDepth) {
+    const width = gameState.board.width;
+    const height = gameState.board.height;
+    const visited = new Set();
+    const queue = [{ x: start.x, y: start.y, depth: 0 }];
+
+    const occupied = new Set();
+    for (let snake of gameState.board.snakes) {
+        for (let segment of snake.body) {
+            occupied.add(`${segment.x},${segment.y}`);
+        }
+    }
+
+    let count = 0;
+
+    while (queue.length > 0) {
+        const { x, y, depth } = queue.shift();
+        if (depth > maxDepth) continue;
+
+        const key = `${x},${y}`;
+        if (visited.has(key)) continue;
+        if (x < 0 || x >= width || y < 0 || y >= height) continue;
+        if (occupied.has(key)) continue;
+
+        visited.add(key);
+        count++;
+
+        queue.push({ x: x + 1, y: y, depth: depth + 1 });
+        queue.push({ x: x - 1, y: y, depth: depth + 1 });
+        queue.push({ x: x, y: y + 1, depth: depth + 1 });
+        queue.push({ x: x, y: y - 1, depth: depth + 1 });
+    }
+
+    return count;
     
     console.log(`MOVE ${gameState.turn}: ${nextMove}`)
     return { move: nextMove };
