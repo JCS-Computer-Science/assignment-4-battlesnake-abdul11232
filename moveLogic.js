@@ -100,6 +100,50 @@ export default function move(gameState){
     }
 
     for (let snake of otherSnakes) {
+        if (snake.id === gameState.you.id) continue;
+    
+        const enemyHead = snake.body[0];
+        const enemyLength = snake.length;
+        const myLength = gameState.you.length;
+    
+        
+        if (
+            enemyHead.x === myHead.x &&
+            enemyHead.y + 1 === myHead.y &&
+            enemyLength >= myLength
+        ) {
+            moveSafety.down = false;
+        }
+    
+        
+        if (
+            enemyHead.x === myHead.x &&
+            enemyHead.y - 1 === myHead.y &&
+            enemyLength >= myLength
+        ) {
+            moveSafety.up = false;
+        }
+    
+        
+        if (
+            enemyHead.x - 1 === myHead.x &&
+            enemyHead.y === myHead.y &&
+            enemyLength >= myLength
+        ) {
+            moveSafety.right = false;
+        }
+    
+       
+        if (
+            enemyHead.x + 1 === myHead.x &&
+            enemyHead.y === myHead.y &&
+            enemyLength >= myLength
+        ) {
+            moveSafety.left = false;
+        }
+    }
+
+    for (let snake of otherSnakes) {
        
         if (snake.id === gameState.you.id) continue;
 
