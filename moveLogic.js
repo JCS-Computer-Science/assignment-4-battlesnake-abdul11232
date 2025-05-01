@@ -198,7 +198,7 @@ export default function move(gameState){
     let closestDistance = Infinity;
 
     for (let food of gameState.board.food) {
-        let distance = Math.abs(food.x - myHead.x) + Math.abs(food.y - myHead.y); // Manhattan distance
+        let distance = Math.abs(food.x - myHead.x) + Math.abs(food.y - myHead.y); 
         if (distance < closestDistance) {
             closestDistance = distance;
             closestFood = food;
@@ -247,7 +247,6 @@ export default function move(gameState){
     return { move: bestMove };
 }
 
-
 function floodFill(start, gameState, maxDepth) {
     const width = gameState.board.width;
     const height = gameState.board.height;
@@ -286,3 +285,4 @@ function floodFill(start, gameState, maxDepth) {
     console.log(`MOVE ${gameState.turn}: ${nextMove}`)
     return { move: nextMove };
 }
+
