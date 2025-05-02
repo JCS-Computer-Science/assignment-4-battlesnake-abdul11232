@@ -70,7 +70,24 @@ export default function move(gameState){
 
     }
     
-    
+    const hazards = gameState.board.hazards;
+
+    for (let hazard of hazards) {
+        if (hazard.x === myHead.x && hazard.y === myHead.y + 1) {
+        moveSafety.up = false;
+        }
+        if (hazard.x === myHead.x && hazard.y === myHead.y - 1) {
+        moveSafety.down = false;
+        }
+        if (hazard.x === myHead.x + 1 && hazard.y === myHead.y) {
+        moveSafety.right = false;
+        }
+        if (hazard.x === myHead.x - 1 && hazard.y === myHead.y) {
+        moveSafety.left = false;
+        }
+    }
+
+
     // TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
     // gameState.board.snakes contains an array of enemy snake objects, which includes their coordinates
     // https://docs.battlesnake.com/api/objects/battlesnake
@@ -245,6 +262,12 @@ export default function move(gameState){
 
     console.log(`MOVE ${gameState.turn}: ${bestMove}`);
     return { move: bestMove };
+
+    
+    
+    
+
+    
 }
 
 function floodFill(start, gameState, maxDepth) {
@@ -284,5 +307,6 @@ function floodFill(start, gameState, maxDepth) {
     
     console.log(`MOVE ${gameState.turn}: ${nextMove}`)
     return { move: nextMove };
-}
 
+    
+}
